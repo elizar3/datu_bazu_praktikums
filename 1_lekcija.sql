@@ -6,11 +6,11 @@ IF NOT EXISTS (
 )
 CREATE DATABASE ElizaRiekstina1 
 ON (NAME='ElizaRiekstina1_Data',
-    FILENAME='C:\database\ElizaRiekstina1.mdf',
+    FILENAME='C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\ElizaRiekstina1.mdf',
     SIZE=100 MB,
     FILEGROWTH=5 MB)
 LOG ON (NAME='ElizaRiekstina1_Log',
-    FILENAME='C:\database\ElizaRiekstina1_Log.ldf',
+    FILENAME='C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\ElizaRiekstina1_Log.ldf',
     SIZE=5 MB,
     FILEGROWTH=1 MB)
 
@@ -22,7 +22,7 @@ ALTER DATABASE ElizaRiekstina1 ADD FILEGROUP FG_NR2
 
 ALTER DATABASE ElizaRiekstina1 ADD FILE (
     NAME='ElizaRiekstina1_Data2',
-    FILENAME='C:\database\ElizaRiekstina1-2.ndf')
+    FILENAME='C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\ElizaRiekstina1-2.ndf')
 TO FILEGROUP FG_NR2
 
 -- Create schemas and tables
@@ -51,9 +51,9 @@ INSERT INTO Schema2.Table2 (id, description) VALUES (3, 'Description 3');
 -- Create a snapshot of the database
 CREATE DATABASE ElizaRiekstina1_Snapshot ON
 (NAME='ElizaRiekstina1', 
-FILENAME='C:\database\ElizaRiekstina1_Snapshot.ss'),
+FILENAME='C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\ElizaRiekstina1_Snapshot.ss'),
 (NAME='ElizaRiekstina1_Data2', 
-FILENAME='C:\database\ElizaRiekstina1_Snapshot2.ss')
+FILENAME='C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\ElizaRiekstina1_Snapshot2.ss')
 AS SNAPSHOT OF ElizaRiekstina1
 
 -- Change data in one of the tables

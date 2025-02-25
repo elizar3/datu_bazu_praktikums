@@ -1,14 +1,14 @@
 ---------------------------------------------------
 -- Izveido jaunu datu bāzi un pārslēdzas uz to
 ---------------------------------------------------
-IF DB_ID('TaskDB') IS NOT NULL
-    DROP DATABASE TaskDB;
+IF DB_ID('ElizaDB') IS NOT NULL
+    DROP DATABASE ElizaDB;
 GO
 
-CREATE DATABASE TaskDB;
+CREATE DATABASE ElizaDB;
 GO
 
-USE TaskDB;
+USE ElizaDB;
 GO
 
 ---------------------------------------------------
@@ -136,7 +136,7 @@ BEGIN TRY
     VALUES (999, 'Nederīga ārējā rinda');
 END TRY
 BEGIN CATCH
-    PRINT 'Kļūda (Ārējās atslēgas ierobežojuma pārkāpums ievietā): ' + ERROR_MESSAGE();
+    PRINT 'Kļūda (Ārējās atslēgas ierobežojuma pārkāpums ievietošanā): ' + ERROR_MESSAGE();
 END CATCH;
 GO
 
@@ -174,5 +174,5 @@ GO
 USE master;
 GO
 
-DROP DATABASE TaskDB;
+DROP DATABASE ElizaDB;
 GO

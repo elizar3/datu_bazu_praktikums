@@ -127,7 +127,7 @@ VALUES
 ('Latvia', 'Riga', '45 Brivibas Street', 'LV-1010'),
 ('Germany', 'Berlin', '78 Alexanderplatz', '10115'),
 ('France', 'Paris', '10 Champs Elysees', '75008'),
-('UK', 'London', '5 Baker Street', 'NW1 6XE');
+('UK', 'London', '221B Baker Street', 'NW1 6XE');
 GO
 
 ---------------------------------------------------------------------------------------

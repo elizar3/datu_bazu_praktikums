@@ -14,7 +14,7 @@ GO
 --    klasterindeksu uz ActivityDate
 ---------------------------------------------------------------------------------------
 CREATE TABLE EmployeeActivity (
-    ActivityID INT IDENTITY(1,1) NOT NULL PRIMARY KEY NONCLUSTERED,  -- Neklasterindeksā primārā atslēga
+    ActivityID INT IDENTITY(1,1) NOT NULL PRIMARY KEY NONCLUSTERED,  -- Primārā atslēga (neklasterindekss)
     EmployeeID INT NOT NULL,
     ActivityDate DATETIME2 NOT NULL,
     ActivityType NVARCHAR(50) NOT NULL
@@ -27,7 +27,7 @@ CREATE CLUSTERED INDEX CIX_EmployeeActivity_ActivityDate
 GO
 
 ---------------------------------------------------------------------------------------
--- 2. Aizpilda tabulu ar datiem (simulē 100 ierakstus)
+-- 2. Aizpilda tabulu ar datiem (simulē 1000 ierakstus)
 ---------------------------------------------------------------------------------------
 SET NOCOUNT ON;
 DECLARE @i INT = 0;
@@ -90,4 +90,54 @@ USE master;
 GO
 
 DROP DATABASE FragmentationDB;
+GO
+
+
+---------------------------------------------------------------------------------------
+-- SimpleComplexQueries_DW2019.sql
+-- Datubāze: AdventureWorksDW2019
+-- Šajā failā ir divi vaicājumi:
+-- 1. Vaicājums, kas apvieno datus no trim tabulām, izmantojot JOIN.
+-- 2. Vaicājums, kas izmanto apakšvaicājumu un aritmētisku izteiksmi, lai aprēķinātu finanšu procentu.
+---------------------------------------------------------------------------------------
+
+USE AdventureWorksDW2019;
+GO
+
+---------------------------------------------------------------------------------------
+-- Vaicājums 1: Datu atlase no trim tabulām ar JOIN
+-- Šis vaicājums apvieno datus no:
+--   - FactInternetSales (pārdošanas dati)
+--   - DimCustomer (klientu dati)
+--   - DimDate (datuma dati)
+---------------------------------------------------------------------------------------
+SELECT 
+    dc.CustomerKey,
+    dc.FirstName,
+    dc.LastName,
+    dd.FullDateAlternateKey AS OrderDate,
+    fis.SalesAmount
+FROM dbo.FactInternetSales AS fis
+INNER JOIN dbo.DimCustomer AS dc
+    ON fis.CustomerKey = dc.CustomerKey
+INNER JOIN dbo.DimDate AS dd
+    ON fis.OrderDateKey = dd.DateKey
+WHERE dd.CalendarYear = 2020;
+GO
+
+---------------------------------------------------------------------------------------
+-- Vaicājums 2: Finanšu procentu aprēķins ar apakšvaicājumu un aritmētisku izteiksmi
+-- Šis vaicājums aprēķina katras organizācijas finanšu apjoma procentu no kopējā finanšu apjoma.
+-- Tabulas:
+--   - FactFinance (finanšu dati)
+--   - DimOrganization (organizāciju dati)
+---------------------------------------------------------------------------------------
+SELECT 
+    org.OrganizationName,
+    SUM(ff.Amount) AS TotalFinance,
+    (SUM(ff.Amount) * 100.0) / (SELECT SUM(Amount) FROM dbo.FactFinance) AS FinancePercent
+FROM dbo.FactFinance AS ff
+INNER JOIN dbo.DimOrganization AS org
+    ON ff.OrganizationKey = org.OrganizationKey
+GROUP BY org.OrganizationName;
 GO
